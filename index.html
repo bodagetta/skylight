@@ -1,0 +1,33 @@
+<div id="container" style="width:100%; height:400px;"></div>
+<script src="https://cdn.firebase.com/v0/firebase.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script>
+    var fb = new Firebase("https://skylight-148af.firebaseio.com/lightData");
+    var lightData = [];
+    var timestamp  = [];
+    var plotData = [];
+    fb.on("value", function(data) {
+        var model = data.val();
+        for(var item in model.data) {
+          lightData.push(parseInt(model.data[item].lightADC));
+          var tempData = [new Date(model.data[item].ts), parseInt(model.data[item].lightADC)];
+          plotData.push(tempData);
+        }
+
+        console.log(plotData[0]);
+          $('#container').highcharts({
+            // chart: { type: 'column' },
+            title: { text: 'ADC Light Value' },
+            xAxis: {
+              type: 'datetime',
+              dateTimeLabelFormats: { // don't display the dummy year
+                  month: '%e. %b',
+                  year: '%b'
+              }
+            },
+            yAxis: { title: { text: 'ADC Value' } },
+            series: [{name: 'ADC Value', data:plotData}]
+        });
+    });
+</script>
