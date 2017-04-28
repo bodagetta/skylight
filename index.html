@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <title>EngeniusMicro IoT</title>
     <script src="https://cdn.firebase.com/v0/firebase.js"></script>
@@ -14,24 +15,34 @@
             for(var item in model) {
               lightData.push(parseInt(model[item].lightADC));
               var dt = new Date(model[item].ts);
-              var tempData = [dt.getTime() - 21600000, parseInt(model[item].lightADC)];
+              var tempData = [dt.getTime() - 18000000, parseInt(model[item].lightADC)];
               //var tempData = [new Date(), parseInt(model[item].lightADC)];
               plotData.push(tempData);
             }
 
               $('#container').highcharts({
                 // chart: { type: 'column' },
-                title: { text: 'ADC Light Value' },
+                title: { text: '' },
                 xAxis: {
                   type: 'datetime'
                 },
-                yAxis: { title: { text: 'ADC Value' } },
-                series: [{name: 'ADC Value', data:plotData}]
+                yAxis: { title: { text: 'Light Intensity' } },
+                series: [{name: 'Light Intensity', data:plotData}]
             });
         });
       </script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
-    <div id="container" style="width:100%; height:400px;"></div>
+    <div class="container-fluid">
+      <h1 class="text-center">EngeniusMicro Gets Your Data</h1>
+      <br/>
+      <div class="well">
+        <div class="text-center">
+          This is a live updating view of a light sensor located in the skylight in our Huntsville offices.
+        </div>
+      </div>
+      <div id="container" style="width:100%; height:400px;"></div>
+    </div>
   </body>
 </html>
