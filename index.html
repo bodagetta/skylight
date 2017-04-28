@@ -4,11 +4,11 @@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
     var fb = new Firebase("https://skylight-148af.firebaseio.com/lightData");
-    var lightData = [];
-    var timestamp  = [];
-    var plotData = [];
     fb.on("value", function(data) {
         var model = data.val();
+        var lightData = [];
+        var timestamp  = [];
+        var plotData = [];
         for(var item in model.data) {
           lightData.push(parseInt(model.data[item].lightADC));
           var tempData = [new Date(model.data[item].ts), parseInt(model.data[item].lightADC)];
