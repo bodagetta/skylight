@@ -7,11 +7,15 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script>
         var fb = new Firebase("https://skylight-148af.firebaseio.com/lightData");
+        var lightData = [];
+        var timestamp = [];
+        var plotData = [];
         fb.on("value", function(data) {
             var model = data.val().data;
-            var lightData = [];
-            var timestamp  = [];
-            var plotData = [];
+            lightData = [];
+            timestamp  = [];
+            plotData = [];
+
             for(var item in model) {
               lightData.push(parseInt(model[item].lightADC));
               var dt = new Date(model[item].ts);
@@ -30,6 +34,23 @@
                 series: [{name: 'Light Intensity', data:plotData}]
             });
         });
+
+        function downloadData() {
+          csvContent = "data:text/csv;charset=utf-8,";
+          for (var item of plotData) {
+            var d = new Date(item[0]);
+            dataString = d + ", " + item[1];
+            csvContent += dataString + "\n";
+          }
+          var encodedUri = encodeURI(csvContent);
+          var link = document.createElement("a");
+          link.setAttribute("href", encodedUri);
+          link.setAttribute("download", "my_data.csv");
+          document.body.appendChild(link); // Required for FF
+
+          link.click(); // This will download the data file named "my_data.csv".
+
+        }
       </script>
       <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -53,6 +74,7 @@
         </div>
       </div>
       <div id="container" style="width:100%; height:400px;"></div>
+      <button onclick="downloadData()" class="btn btn-primary">Download Data</button>
     </div>
   </body>
 </html>
