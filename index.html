@@ -12,6 +12,7 @@
         var plotData = [];
         fb.on("value", function(data) {
             var model = data.val().data;
+            model = model.slice(-20);
             lightData = [];
             timestamp  = [];
             plotData = [];
