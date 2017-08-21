@@ -12,7 +12,7 @@
         var plotData = [];
         fb.on("value", function(data) {
             var model = data.val().data;
-            model = model.slice(-20);
+            
             lightData = [];
             timestamp  = [];
             plotData = [];
@@ -22,7 +22,11 @@
               var dt = new Date(model[item].ts);
               var tempData = [dt.getTime() - 18000000, parseInt(model[item].lightADC)];
               //var tempData = [new Date(), parseInt(model[item].lightADC)];
-              plotData.push(tempData);
+              var now = new Date()
+              var diff = now - dt.getTime();
+              if (diff < 10000000) {
+                plotData.push(tempData);
+              }
             }
 
               $('#container').highcharts({
